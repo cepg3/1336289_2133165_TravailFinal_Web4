@@ -60,6 +60,7 @@ class Player(models.Model):
     username = models.CharField(max_length=20)
     is_in_game = models.BooleanField(default=False)
     cards = models.ManyToManyField(Card, related_name='players')
+    points = models.IntegerField(default=0)
 
 
     def __str__(self):
