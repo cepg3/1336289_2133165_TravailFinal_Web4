@@ -1,5 +1,54 @@
 from django.db import models
 
+class Card(models.Model):
+    """
+    Represents a card in the game.
+    
+    A card has a title and a text.
+    They are used by players to create solutions to the problems of the client player.
+    """
+    title = models.CharField(max_length=100)
+    text = models.CharField(max_length=250)
+    
+    def __str__(self):
+        return self.title
+    
+
+class BugCard(Card):
+    """
+    This type of card is used to create problems for the client player.
+    """
+    pass
+
+
+class UserCard(Card):
+    """
+    This type of card is used as context for the client player's problem.
+    """
+    pass
+
+
+class StartCard(Card):
+    """
+    This type of card is used to create the beginning of the technicien player's solution.
+    """
+    pass
+
+
+class MiddleCard(Card):
+    """
+    This type of card is used to create the middle of the technicien player's solution.
+    """
+    pass
+
+
+class EndCard(Card):
+    """
+    This type of card is used to create the end of the technicien player's solution.
+    """
+    pass
+
+
 class Player(models.Model):
     """
     Represents a player in the game. 
@@ -11,10 +60,33 @@ class Player(models.Model):
     """
     username = models.CharField(max_length=20)
     is_in_game = models.BooleanField(default=False)
-    
+    cards = models.ManyToManyField(Card, related_name='players')
+
+
     def __str__(self):
         return self.username
-    
-    
+
+
 class Game(models.Model):
-    players = models.ManyToOneRel(Player, related_name='game')
+    """
+    Represents a game.
+    A game has a join_code that is used to join the game.
+    The players field is used to store the players that are in the game.
+    The is_possible_to_join field is used to check if it is possible to join the game.
+    The current_client_player field is used to store the player that is the client player at the moment.
+    """
+    join_code = models.CharField(max_length=6)
+    players = models.ManyToManyField(Player, related_name='games')
+    is_possible_to_join = models.BooleanField(default=True)
+    current_client_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='current_game', null=True)
+
+
+class LeaderBoardPoints(models.Model):
+    """
+    Represents the points of the players.
+    """
+    username = models.CharField(max_length=20)
+    points = models.IntegerField()
+    
+    def __str__(self):
+        return self.player.username
