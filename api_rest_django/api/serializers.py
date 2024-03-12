@@ -5,37 +5,37 @@ from rest_framework import serializers
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Card
-        fields = ('id', 'title', 'text')
+        fields = ('id', 'text')
 
 
 class BugCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.BugCard
-        fields = ('id', 'title', 'text')
+        fields = ('id', 'text')
 
 
 class UserCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserCard
-        fields = ('id', 'title', 'text')
+        fields = ('id', 'text')
 
 
 class StartCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.StartCard
-        fields = ('id', 'title', 'text')
+        fields = ('id', 'text')
 
 
 class MiddleCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.MiddleCard
-        fields = ('id', 'title', 'text')
+        fields = ('id', 'text')
 
 
 class EndCardSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.EndCard
-        fields = ('id', 'title', 'text')
+        fields = ('id', 'text')
 
 
 class PlayerSerializer(serializers.ModelSerializer):

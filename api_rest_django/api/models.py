@@ -7,11 +7,10 @@ class Card(models.Model):
     A card has a title and a text.
     They are used by players to create solutions to the problems of the client player.
     """
-    title = models.CharField(max_length=100)
-    text = models.CharField(max_length=250)
+    text = models.CharField(max_length=250, unique=True)
     
     def __str__(self):
-        return self.title
+        return self.text
     
 
 class BugCard(Card):
