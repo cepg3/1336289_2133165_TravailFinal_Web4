@@ -8,6 +8,7 @@ import Login from "./Login/Login";
 function App() {
 	const [user, setUser] = React.useState<UserContextType | null>(null);
 	const handleUserChange = (user: UserContextType) => {
+		console.log("User name changed to: ", user);
 		setUser(user);
 	};
 
