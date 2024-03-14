@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import logo from "./logo.svg";
+import React from "react";
 import "../assets/css/App.css";
 import { UserContextType } from "./Login/UserContext";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
