@@ -8,6 +8,7 @@ import {
 	CardContent,
 	TextField,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginCard({
 	user,
@@ -16,9 +17,14 @@ export default function LoginCard({
 	user: UserContextType | null;
 	onUserChange: (user: UserContextType) => void;
 }) {
-	const [tempUsername, onTempUsernameChange] = useState<string>(user?.username || "");
+	const navigate = useNavigate();
+
+	const [tempUsername, onTempUsernameChange] = useState<string>(
+		user?.username || ""
+	);
 	const handleUserChange = (username: string) => {
 		onUserChange({ username: tempUsername });
+		navigate("/dashboard");
 	};
 
 	return (
