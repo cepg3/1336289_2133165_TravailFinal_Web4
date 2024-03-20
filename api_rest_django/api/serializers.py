@@ -39,7 +39,7 @@ class EndCardSerializer(serializers.ModelSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
-    cards = CardSerializer(many=True)
+    cards = CardSerializer(many=True, required=False)
 
     class Meta:
         model = models.Player
@@ -47,12 +47,12 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    players = PlayerSerializer(many=True)
-    current_client_player = PlayerSerializer()
+    player_ids = serializers.PrimaryKeyRelatedField(many=True, source='players', queryset=models.Player.objects.all())
+    current_client_player_id = serializers.PrimaryKeyRelatedField(read_only=True, source='current_client_player')
 
     class Meta:
         model = models.Game
-        fields = ('id', 'join_code', 'players', 'is_possible_to_join', 'current_client_player')
+        fields = ('id', 'join_code', 'player_ids', 'is_possible_to_join', 'current_client_player_id')
 
 
 class LeaderBoardPointsSerializer(serializers.ModelSerializer):
