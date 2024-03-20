@@ -63,6 +63,7 @@ export default function Join({
 								handleGameCodeChange(tempGameCode);
 							}
 						}}
+                        inputProps={{ maxLength: 6 }}
 					/>
 				</CardContent>
 				<CardActions sx={{ justifyContent: "center" }}>
