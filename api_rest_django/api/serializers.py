@@ -52,7 +52,7 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Game
-        fields = ('id', 'join_code', 'player_ids', 'is_possible_to_join', 'current_client_player_id')
+        fields = ('id', 'join_code', 'player_ids', 'is_possible_to_join', 'current_client_player_id', 'points_to_win')
 
 
 class LeaderBoardPointsSerializer(serializers.ModelSerializer):
