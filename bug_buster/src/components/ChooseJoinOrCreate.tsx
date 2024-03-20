@@ -1,11 +1,16 @@
 import { Button, Card, CardContent, Grid } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function ChooseJoinOrCreate() {
-	const [gameCode, setGameCode] = React.useState<string>("");
-	const handleGameCodeChange = (gameCode: string) => {
-		setGameCode(gameCode);
-		console.log("Game code changed to: ", gameCode);
+	const navigate = useNavigate();
+	
+	const handleJoin = () => {
+		navigate("/join");
+	};
+
+	const handleCreate = () => {
+		navigate("/create");
 	};
 
 	return (
@@ -21,12 +26,14 @@ function ChooseJoinOrCreate() {
 				<CardContent>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<Button variant="contained">
+							<Button variant="contained" onClick={handleJoin}>
 								Rejoindre une partie
 							</Button>
 						</Grid>
 						<Grid item xs={12}>
-							<Button variant="outlined">Créer une partie</Button>
+							<Button variant="outlined" onClick={handleCreate}>
+								Créer une partie
+							</Button>
 						</Grid>
 					</Grid>
 				</CardContent>
