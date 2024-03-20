@@ -44,6 +44,11 @@ export default function LoginCard({
 					value={tempUsername}
 					size="medium"
 					onChange={(e) => onTempUsernameChange(e.target.value)}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							handleUserChange(tempUsername);
+						}
+					}}
 				/>
 			</CardContent>
 			<CardActions sx={{ justifyContent: "center" }}>
