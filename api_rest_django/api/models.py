@@ -80,6 +80,7 @@ class Game(models.Model):
     is_possible_to_join = models.BooleanField(default=True)
     current_client_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='current_game', null=True)
     points_to_win = models.IntegerField(default=10)
+    last_played = models.DateTimeField(auto_now=True)
 
 
 class LeaderBoardPoints(models.Model):
