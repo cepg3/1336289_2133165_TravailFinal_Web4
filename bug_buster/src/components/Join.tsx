@@ -5,6 +5,7 @@ import {
 	CardContent,
 	Dialog,
 	DialogContent,
+	DialogContentText,
 	DialogTitle,
 	TextField,
 } from "@mui/material";
@@ -79,7 +80,15 @@ export default function Join({
 			<Dialog open={showModal} onClose={() => setShowModal(false)}>
 				<DialogTitle>Aucune partie avec ce code</DialogTitle>
 				<DialogContent>
-					Veuillez vérifier le code de la partie et réessayer.
+					<DialogContentText gutterBottom>
+                        Veuillez vérifier le code de la partie et réessayer.
+                    </DialogContentText>
+					<Button
+						variant="contained"
+						onClick={() => setShowModal(false)}
+					>
+						Fermer
+					</Button>
 				</DialogContent>
 			</Dialog>
 		</>
