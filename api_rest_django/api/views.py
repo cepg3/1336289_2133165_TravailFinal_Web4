@@ -79,6 +79,21 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response({'exists': True})
         except models.Game.DoesNotExist:
             return Response({'exists': False})
+    
+    @action(detail=True, methods=['get'], url_path='can-join')
+    def can_join(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the join code is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            game = models.Game.objects.get(join_code=pk)
+            if game.players.count() < 6:
+                return Response({'can_join': True})
+            else:
+                return Response({'can_join': False})
+        except models.Game.DoesNotExist:
+            return Response({'can_join': False})
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
