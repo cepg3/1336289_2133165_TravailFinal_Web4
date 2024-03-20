@@ -7,6 +7,7 @@ import PageNotFound from "./PageNotFound";
 import Dashboard from "./Dashboard";
 import Join from "./Join";
 import Create from "./Create";
+import Game from "./Game/Game";
 
 function App() {
 	const [user, setUser] = React.useState<UserContextType>({ username: "" });
@@ -61,6 +62,15 @@ function App() {
 								<Create
 									gameCode={gameCode}
 									onGameCodeChange={handleGameCodeChange}
+								/>
+							}
+						/>
+						<Route
+							path="/game"
+							element={
+								<Game
+									gameCode={gameCode}
+									user={user}
 								/>
 							}
 						/>
