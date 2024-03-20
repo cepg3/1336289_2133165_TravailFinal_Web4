@@ -3,9 +3,14 @@ import axios from "axios";
 class api {
 	static async doesGameExist(gameId: string): Promise<boolean> {
 		return axios
-			.get(`/game/${gameId}/exists`)
+			.get(`http://localhost:8000/games/${gameId}/exists`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
 			.then((response) => {
-				return response.data;
+				return response.data.exists;
 			})
 			.catch((error) => {
 				console.error(error);
