@@ -61,6 +61,21 @@ class PlayerViewSet(viewsets.ModelViewSet):
     """
     queryset = models.Player.objects.all().order_by('username')
     serializer_class = serializers.PlayerSerializer
+    
+    @action(detail=True, methods=['get'], url_path='taken')
+    def taken(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the username is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            player = models.Player.objects.filter(username=pk, is_in_game=True).first()
+            if player:
+                return Response({'taken': True})
+            
+            raise models.Player.DoesNotExist
+        except models.Player.DoesNotExist:
+            return Response({'taken': False})
 
 
 class GameViewSet(viewsets.ModelViewSet):
