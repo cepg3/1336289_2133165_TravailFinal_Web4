@@ -29,46 +29,53 @@ function App() {
 				height: "100vh",
 			}}
 		>
-			<BrowserRouter>
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<Login
-								user={user}
-								onUserChange={handleUserChange}
-							/>
-						}
-					/>
-					<Route
-						path="/dashboard"
-						element={<Dashboard user={user} />}
-					/>
-					<Route
-						path="/join"
-						element={
-							<Join
-								gameCode={gameCode}
-								onGameCodeChange={handleGameCodeChange}
-							/>
-						}
-					/>
-
-					<Route
-						path="*"
-						element={
-							user?.username != null && user?.username !== "" ? (
-								<PageNotFound />
-							) : (
+			{user?.username != null && user?.username !== "" ? (
+				<BrowserRouter>
+					<Routes>
+						<Route
+							path="/"
+							element={
 								<Login
 									user={user}
 									onUserChange={handleUserChange}
 								/>
-							)
-						}
-					/>
-				</Routes>
-			</BrowserRouter>
+							}
+						/>
+						<Route
+							path="/dashboard"
+							element={<Dashboard user={user} />}
+						/>
+						<Route
+							path="/join"
+							element={
+								<Join
+									gameCode={gameCode}
+									onGameCodeChange={handleGameCodeChange}
+								/>
+							}
+						/>
+
+						<Route
+							path="*"
+							element={
+								user?.username != null &&
+								user?.username !== "" ? (
+									<PageNotFound />
+								) : (
+									<Login
+										user={user}
+										onUserChange={handleUserChange}
+									/>
+								)
+							}
+						/>
+					</Routes>
+				</BrowserRouter>
+			) : (
+				<BrowserRouter>
+					<Login user={user} onUserChange={handleUserChange} />
+				</BrowserRouter>
+			)}
 		</div>
 	);
 }
