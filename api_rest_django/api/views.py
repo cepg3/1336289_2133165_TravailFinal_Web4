@@ -76,9 +76,9 @@ class GameViewSet(viewsets.ModelViewSet):
         
         try:
             game = models.Game.objects.get(join_code=pk)
-            return Response({True})
+            return Response({'exists': True})
         except models.Game.DoesNotExist:
-            return Response({False})
+            return Response({'exists': False})
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
