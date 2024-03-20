@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from api import serializers, models
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 
 class CardViewSet(viewsets.ModelViewSet):
@@ -65,6 +67,18 @@ class GameViewSet(viewsets.ModelViewSet):
     """
     queryset = models.Game.objects.all().order_by('join_code')
     serializer_class = serializers.GameSerializer
+    
+    @action(detail=True, methods=['get'], url_path='exists')
+    def exists(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the join code is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            game = models.Game.objects.get(join_code=pk)
+            return Response({True})
+        except models.Game.DoesNotExist:
+            return Response({False})
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
