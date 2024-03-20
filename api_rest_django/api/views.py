@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.shortcuts import render
 from api import serializers, models
 from rest_framework import viewsets
@@ -94,6 +96,31 @@ class GameViewSet(viewsets.ModelViewSet):
                 return Response({'can_join': False})
         except models.Game.DoesNotExist:
             return Response({'can_join': False})
+    
+    def retrieve(self, request, *args, **kwargs):
+        # Checks if the last played move of the game is more than 15 minutes ago
+        game = self.get_object()
+        if game.last_played + timedelta(minutes=15) < timezone.now():
+            for player in game.players.all():
+                if player.is_in_game:
+                    player.delete()
+            
+            game.delete()
+            return Response(status=404)
+        
+        return super().retrieve(request, *args, **kwargs)
+
+    def list(self, request, *args, **kwargs):
+        # Deletes all games that have a last played move more than 15 minutes ago
+        for game in models.Game.objects.all():
+            if game.last_played + timedelta(minutes=15) < timezone.now():
+                for player in game.players.all():
+                    if player.is_in_game:
+                        player.delete()
+                
+                game.delete()
+        
+        return super().list(request, *args, **kwargs)
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
