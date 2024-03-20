@@ -79,6 +79,7 @@ class Game(models.Model):
     players = models.ManyToManyField(Player, related_name='games')
     is_possible_to_join = models.BooleanField(default=True)
     current_client_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='current_game', null=True)
+    points_to_win = models.IntegerField(default=10)
 
 
 class LeaderBoardPoints(models.Model):
