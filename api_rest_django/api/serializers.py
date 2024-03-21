@@ -47,7 +47,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class GameSerializer(serializers.ModelSerializer):
-    player_ids = serializers.PrimaryKeyRelatedField(many=True, source='players', queryset=models.Player.objects.all())
+    player_ids = serializers.PrimaryKeyRelatedField(many=True, source='players', queryset=models.Player.objects.all(), required=False)
     current_client_player_id = serializers.PrimaryKeyRelatedField(read_only=True, source='current_client_player')
 
     class Meta:

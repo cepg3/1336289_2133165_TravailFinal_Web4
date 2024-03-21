@@ -91,7 +91,7 @@ class Game(models.Model):
     The current_client_player field is used to store the player that is the client player at the moment.
     """
     join_code = models.CharField(max_length=6)
-    players = models.ManyToManyField(Player, related_name='games')
+    players = models.ManyToManyField(Player, related_name='games', blank=True)
     is_possible_to_join = models.BooleanField(default=True)
     current_client_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='current_game', null=True)
     points_to_win = models.IntegerField(default=10)
