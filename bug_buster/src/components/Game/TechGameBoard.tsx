@@ -4,11 +4,7 @@ import ClientCard from './ClientCard';
 import PlayerPoints from './PlayerPoints';
 import CardListDisplay from './CardListDisplay';
 
-export default function TechGameBoard() {
-  // TODO Modifier les valeurs gameId et playerId pour correspondre à votre partie
-  const gameId = Number("123");
-  const playerId = Number("456");
-  const clientId = Number("789");
+export default function TechGameBoard({ gameId, playerId, clientId }: { gameId: number; playerId: number; clientId: number}) {
 
   return (
     <Box sx={{ padding: 2 }}>
