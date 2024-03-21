@@ -31,8 +31,8 @@ function App() {
 				height: "100vh",
 			}}
 		>
-			{user?.username != null && user?.username !== "" ? (
-				<BrowserRouter>
+			<BrowserRouter>
+				{user?.username != null && user?.username !== "" ? (
 					<Routes>
 						<Route
 							path="/"
@@ -67,12 +67,7 @@ function App() {
 						/>
 						<Route
 							path="/game"
-							element={
-								<Game
-									gameCode={gameCode}
-									user={user}
-								/>
-							}
+							element={<Game gameCode={gameCode} user={user} />}
 						/>
 
 						<Route
@@ -90,12 +85,10 @@ function App() {
 							}
 						/>
 					</Routes>
-				</BrowserRouter>
-			) : (
-				<BrowserRouter>
+				) : (
 					<Login user={user} onUserChange={handleUserChange} />
-				</BrowserRouter>
-			)}
+				)}
+			</BrowserRouter>
 		</div>
 	);
 }
