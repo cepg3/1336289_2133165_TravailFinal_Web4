@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { UserContextType } from "../Login/UserContext";
-import api, { PlayerType } from "../../Api";
+import api, { GameType, PlayerType } from "../../Api";
 
 export default function Game({
 	gameCode,
@@ -21,7 +21,7 @@ export default function Game({
 			if (keepChecking) {
 				console.log("Checking username : ", user.username);
 
-				const dbUser = await api
+				const apiGame: GameType | null = await api
 					.isUsernameTaken(user.username)
 					.then(async (response) => {
 						if (response) {
@@ -29,47 +29,59 @@ export default function Game({
 								"Username already taken : ",
 								user.username
 							);
-							setUser({ username: "", id: null });
-							return null;
-						}
-
-						// Creates the user if it doesn't exist
-						const newUser = await api.createPlayer(user.username);
-						setUser({ username: newUser.username, id: newUser.id });
-
-						setKeepChecking(false);
-						console.log("Stopped username verification");
-
-						return newUser;
-					})
-					.then(async (response) => {
-						if (response != null) {
+							return true;
+						} else {
+							const newUser = await api.createPlayer(
+								user.username
+							);
+							setUser({
+								username: newUser.username,
+								id: newUser.id,
+							});
 							console.log("User created : ", user.username);
+							return newUser;
 						}
-
-						return response;
+					})
+					.then(async (userOrResponse) => {
+						if (userOrResponse === true) {
+							return await api.getPlayer(user.username);
+						} else {
+							return userOrResponse;
+						}
+					})
+					.then(async (user) => {
+						// Makes sure the game exists
+						return await api
+							.doesGameExist(gameCode)
+							.then(async (gameExist) => {
+								if (gameExist) {
+									return await api.getGame(gameCode);
+								} else {
+									console.log("Creating game : ", gameCode);
+									return await api
+										.createGame(gameCode)
+										.then((newGame) => {
+											if (newGame.id != null) {
+												console.log(
+													"Game created : ",
+													gameCode
+												);
+												return newGame;
+											}
+											return null;
+										});
+								}
+							})
+							.then(async (nullOrNewGame) => {
+								if (nullOrNewGame != null) {
+									return await api.joinGame(
+										nullOrNewGame.id,
+										user.id
+									);
+								}
+								return null;
+							});
 					});
-
-				if (dbUser != null) {
-					// Makes sure the game exists
-					await api
-						.doesGameExist(gameCode)
-						.then(async (response) => {
-							if (!response) {
-								console.log("Creating game : ", gameCode);
-								const newGame = await api.createGame(gameCode);
-								console.log("Game created : ", gameCode);
-								return newGame;
-							}
-
-							return await api.getGame(gameCode);
-						})
-						.then(async (response) => {
-							if (response?.id != null && dbUser.id != null) {
-								await api.joinGame(response.id, dbUser.id);
-							}
-						});
-				}
 			}
 		};
 
