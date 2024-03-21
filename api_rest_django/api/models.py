@@ -12,6 +12,21 @@ class Card(models.Model):
     def __str__(self):
         return self.text
     
+    @property
+    def cardCategory(self):
+        # Checks if the card is a BugCard, UserCard, StartCard, MiddleCard or EndCard.
+        if hasattr(self, 'bugcard'):
+            return 'Bug'
+        elif hasattr(self, 'usercard'):
+            return 'User'
+        elif hasattr(self, 'startcard'):
+            return 'Start'
+        elif hasattr(self, 'middlecard'):
+            return 'Middle'
+        elif hasattr(self, 'endcard'):
+            return 'End'
+        else:
+            return 'Card'
 
 class BugCard(Card):
     """
