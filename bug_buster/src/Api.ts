@@ -94,19 +94,7 @@ class api {
 			})
 			.catch(async (error) => {
 				// Checks if the error is that the username is already taken
-				if (
-					error.response.status === 400 &&
-					error.response.data.username
-				) {
-					return await api.getPlayer(username);
-				}
-
-				console.error(error);
-				alert(
-					"Une erreur s'est produite lors de la création du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
-				);
-
-				return {} as PlayerType;
+				return await api.getPlayer(username);
 			});
 	}
 
