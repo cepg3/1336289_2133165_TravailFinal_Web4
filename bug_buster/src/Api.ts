@@ -3,7 +3,7 @@ import axios from "axios";
 class api {
 	static async doesGameExist(gameId: string): Promise<boolean> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/exists`, {
+			.get(`http://localhost:8000/games/${gameId}/exists/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -27,7 +27,7 @@ class api {
 		}
 
 		return axios
-			.get(`http://localhost:8000/players/${username}/taken`, {
+			.get(`http://localhost:8000/players/${username}/taken/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -92,11 +92,20 @@ class api {
 			.then((response) => {
 				return response.data as PlayerType;
 			})
-			.catch((error) => {
+			.catch(async (error) => {
+				// Checks if the error is that the username is already taken
+				if (
+					error.response.status === 400 &&
+					error.response.data.username
+				) {
+					return await api.getPlayer(username);
+				}
+
 				console.error(error);
 				alert(
 					"Une erreur s'est produite lors de la création du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
 				);
+
 				return {} as PlayerType;
 			});
 	}
@@ -127,27 +136,57 @@ class api {
 			});
 	}
 
-	static async startGame(gameId: string): Promise<GameType> {
-		//TODO
-		return {} as GameType;
+	static async startGame(gameId: number): Promise<GameType> {
+		return axios
+			.get(`http://localhost:8000/games/${gameId}/start/`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				return response.data as GameType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors du démarrage de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as GameType;
+			});
 	}
 
 	static async getGame(gameId: string): Promise<GameType> {
-		//TODO
-		return {} as GameType;
+		return axios
+			.get(`http://localhost:8000/games/${gameId}/by_join_code/`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				return response.data as GameType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la récupération de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as GameType;
+			});
 	}
 
-	static async getPlayers(gameId: string): Promise<PlayerType[]> {
+	static async getPlayers(gameId: number): Promise<PlayerType[]> {
 		//TODO
 		return [];
 	}
 
-	static async isGameFinished(gameId: string): Promise<boolean> {
+	static async isGameFinished(gameId: number): Promise<boolean> {
 		//TODO
 		return false;
 	}
 
-	static async getGameWinnerUsername(gameId: string): Promise<string> {
+	static async getGameWinnerUsername(gameId: number): Promise<string> {
 		//TODO
 		return "";
 	}
