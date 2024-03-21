@@ -1,42 +1,24 @@
-import React, { useState } from "react";
-import {
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-} from "@mui/material";
+import React from "react";
+import { Radio, RadioGroup, FormControlLabel, FormControl } from "@mui/material";
 import GameCard from "./GameCard";
 import { GameCardType } from "../../Api";
+import { SelectedCards } from "../../interfaces/CardInterface";
 
-const getRadioGroupName = (cardCategory: string): string => {
-  switch (cardCategory) {
-    case "Bug":
-      return "Bug";
-    case "User":
-      return "User";
-    case "Start":
-      return "Start";
-    case "Middle":
-      return "Middle";
-    case "End":
-      return "End";
-    default:
-      return "General";
-  }
-};
-
-export default function GameCardRadioButton({
-  gameCardType,
-}: {
+interface GameCardRadioButtonProps {
   gameCardType: GameCardType;
-}) {
-  const radioGroupName = getRadioGroupName(gameCardType.cardCategory);
+  onSelectCard: (cardId: number, cardCategory: keyof SelectedCards) => void;
+}
+
+export default function GameCardRadioButton({ gameCardType, onSelectCard }: GameCardRadioButtonProps) {
+  const handleChange = () => {
+    onSelectCard(gameCardType.id, gameCardType.cardCategory as keyof SelectedCards);
+  };
 
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <FormControl component="fieldset">
-        <RadioGroup row aria-label={radioGroupName} name={radioGroupName}>
-          <Radio />
+        <RadioGroup row aria-label="game-card-selection" name="game-card-selection">
+          <FormControlLabel control={<Radio onChange={handleChange} />} label="" />
         </RadioGroup>
       </FormControl>
       <GameCard gameCardType={gameCardType} />
