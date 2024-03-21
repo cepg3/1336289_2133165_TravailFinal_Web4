@@ -45,9 +45,34 @@ class api {
 			});
 	}
 
-	static async createGame(gameId: string): Promise<GameType> {
-		//TODO
-		return {} as GameType;
+	static async createGame(
+		gameId: string,
+		pointsToWin: number = 10
+	): Promise<GameType> {
+		return axios
+			.post(
+				`http://localhost:8000/games/`,
+				{
+					join_code: gameId,
+					points_to_win: pointsToWin,
+				},
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then((response) => {
+				return response.data as GameType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la création de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as GameType;
+			});
 	}
 
 	static async createPlayer(username: string): Promise<PlayerType> {
@@ -87,7 +112,11 @@ class api {
 }
 
 interface GameType {
-	//TODO
+	id: number;
+	join_code: string;
+	payer_ids: number[];
+	current_client_player_id: number;
+	points_to_win: number;
 }
 
 interface PlayerType {
