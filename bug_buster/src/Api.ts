@@ -102,8 +102,29 @@ class api {
 	}
 
 	static async joinGame(gameId: number, playerId: number): Promise<GameType> {
-		//TODO
-		return {} as GameType;
+		return axios
+			.patch(
+				`http://localhost:8000/games/${gameId}/join`,
+				{
+					player_id: playerId,
+				},
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then((response) => {
+				return response.data as GameType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la jointure de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as GameType;
+			});
 	}
 
 	static async startGame(gameId: string): Promise<GameType> {
@@ -178,14 +199,20 @@ class api {
 	}
 
 	// Function to get cards from a player in a game
-	static async getPlayerCards(gameId: string, playerId: number): Promise<GameCardType[]> {
+	static async getPlayerCards(
+		gameId: string,
+		playerId: number
+	): Promise<GameCardType[]> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/players/${playerId}/cards`, {
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			})
+			.get(
+				`http://localhost:8000/games/${gameId}/players/${playerId}/cards`,
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+				}
+			)
 			.then((response) => {
 				return response.data as GameCardType[];
 			})
@@ -197,7 +224,6 @@ class api {
 				return [] as GameCardType[];
 			});
 	}
-	
 }
 
 export interface GameType {
