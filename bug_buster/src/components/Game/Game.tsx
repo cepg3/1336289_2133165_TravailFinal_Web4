@@ -38,7 +38,7 @@ export default function Game({
 									user.username
 								);
 								setUser({
-									username: newUser.username,
+									username: user.username,
 									id: newUser.id,
 									is_in_game: true,
 									is_client: true,
