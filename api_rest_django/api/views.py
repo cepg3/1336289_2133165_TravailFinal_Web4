@@ -69,7 +69,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
             return Response(status=404)
         
         try:
-            player = models.Player.objects.filter(username=pk, is_in_game=True).first()
+            player = models.Player.objects.filter(username=pk).first()
             if player:
                 return Response({'taken': True})
             
