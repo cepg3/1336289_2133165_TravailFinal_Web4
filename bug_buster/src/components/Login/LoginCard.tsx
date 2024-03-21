@@ -35,7 +35,12 @@ export default function LoginCard({
 			return;
 		}
 
-		onUserChange({ username: tempUsername, id: null });
+		onUserChange({
+			username: tempUsername,
+			id: null,
+			is_in_game: false,
+			is_client: false,
+		});
 		navigate("/dashboard");
 	};
 
