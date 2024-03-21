@@ -126,7 +126,7 @@ class api {
 
 	static async startGame(gameId: number): Promise<GameType> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/start/`, {
+			.put(`http://localhost:8000/games/start/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
