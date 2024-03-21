@@ -150,6 +150,32 @@ class api {
 				return {} as PlayerType;
 			});
 	}
+
+	static async setPlayerIsInGame(id: number): Promise<PlayerType> {
+		return axios
+			.patch(
+				`http://localhost:8000/players/${id}/`,
+				{
+					is_in_game: true
+				},
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then((response) => {
+				return response.data as PlayerType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la mise à jour du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as PlayerType;
+			});
+	}
 }
 
 interface GameType {
