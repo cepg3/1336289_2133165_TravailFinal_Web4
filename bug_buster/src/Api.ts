@@ -76,8 +76,29 @@ class api {
 	}
 
 	static async createPlayer(username: string): Promise<PlayerType> {
-		//TODO
-		return {} as PlayerType;
+		return axios
+			.post(
+				`http://localhost:8000/players/`,
+				{
+					username: username,
+				},
+				{
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then((response) => {
+				return response.data as PlayerType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la création du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as PlayerType;
+			});
 	}
 
 	static async joinGame(gameId: string, username: string): Promise<GameType> {
@@ -120,7 +141,16 @@ interface GameType {
 }
 
 interface PlayerType {
-	//TODO
+	id: number;
+	username: string;
+	cards: GameCardType[];
+	points: number;
+}
+
+interface GameCardType {
+	id: number;
+	text: string;
+	cardCategory: string;
 }
 
 export default api;
