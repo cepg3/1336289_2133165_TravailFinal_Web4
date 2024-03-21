@@ -30,7 +30,6 @@ export default function CardListDisplay({ gameId, playerId }: { gameId: number; 
     console.log("Soumission de la phrase :", phrase);
   };
 
-  // Filtrer les cartes par catégorie
   const cardsStart = cards.filter(card => card.cardCategory === "Start");
   const cardsMiddle = cards.filter(card => card.cardCategory === "Middle");
   const cardsEnd = cards.filter(card => card.cardCategory === "End");
