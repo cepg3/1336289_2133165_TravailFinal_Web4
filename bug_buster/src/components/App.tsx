@@ -83,8 +83,6 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 			};
 
 			checkUser();
-
-			api.setPlayerIsInGame(3)
 		}
 	}, [userContext, location, keepChecking]);
 
