@@ -19,6 +19,10 @@ class api {
 	}
 
 	static async isUsernameTaken(username: string): Promise<boolean> {
+		if (username == null || username === "") {
+			return false;
+		}
+
 		return axios
 			.get(`http://localhost:8000/players/${username}/taken`, {
 				headers: {
