@@ -35,7 +35,7 @@ export default function LoginCard({
 			return;
 		}
 
-		onUserChange({ username: tempUsername });
+		onUserChange({ username: tempUsername, id: null });
 		navigate("/dashboard");
 	};
 
