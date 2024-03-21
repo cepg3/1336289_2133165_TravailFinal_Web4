@@ -37,6 +37,8 @@ export default function Game({
 							setUser({
 								username: newUser.username,
 								id: newUser.id,
+								is_in_game: true,
+								is_client: true,
 							});
 							console.log("User created : ", user.username);
 							return newUser;
