@@ -30,30 +30,32 @@ function App() {
 			}}
 		>
 			<BrowserRouter>
-				<Main setShowModal={setShowModal}/>
+				<Main setShowModal={setShowModal} />
 			</BrowserRouter>
 			{showModal ? (
 				<Dialog open={showModal} onClose={() => setShowModal(false)}>
-				<DialogTitle>Nom d'utilisateur déjà pris</DialogTitle>
-				<DialogContent>
-					<DialogContentText gutterBottom>
-                        Veuillez choisir un autre nom d'utilisateur.
-					</DialogContentText>
-					<Button
-						variant="contained"
-						onClick={() => setShowModal(false)}
-					>
-						Fermer
-					</Button>
-				</DialogContent>
-			</Dialog>
+					<DialogTitle>Nom d'utilisateur déjà pris</DialogTitle>
+					<DialogContent>
+						<DialogContentText gutterBottom>
+							Veuillez choisir un autre nom d'utilisateur.
+						</DialogContentText>
+						<Button
+							variant="contained"
+							onClick={() => setShowModal(false)}
+						>
+							Fermer
+						</Button>
+					</DialogContent>
+				</Dialog>
 			) : null}
 		</div>
 	);
 }
 
-function Main({setShowModal}: {setShowModal: (show: boolean) => void}) {
+function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 	const location = useLocation();
+
+	const [keepChecking, setKeepChecking] = useState<boolean>(true);
 
 	const [user, setUser] = React.useState<UserContextType>({ username: "" });
 	const handleUserChange = (user: UserContextType) => {
@@ -68,19 +70,21 @@ function Main({setShowModal}: {setShowModal: (show: boolean) => void}) {
 	};
 
 	useEffect(() => {
-		const checkUser = async () => {
-			console.log("Checking username : ", user.username);
+		if (keepChecking) {
+			const checkUser = async () => {
+				console.log("Checking username : ", user.username);
 
-			const response = await api.isUsernameTaken(user.username);
-			if (response) {
-				console.log("Username already taken : ", user.username);
-				setShowModal(true);
-				handleUserChange({ username: "" });
-			}
-		};
+				const response = await api.isUsernameTaken(user.username);
+				if (response) {
+					console.log("Username already taken : ", user.username);
+					setShowModal(true);
+					handleUserChange({ username: "" });
+				}
+			};
 
-		checkUser();
-	}, [user, location]);
+			checkUser();
+		}
+	}, [user, location, keepChecking]);
 
 	if (user?.username != null && user?.username !== "") {
 		return (
@@ -112,7 +116,13 @@ function Main({setShowModal}: {setShowModal: (show: boolean) => void}) {
 				/>
 				<Route
 					path="/game"
-					element={<Game gameCode={gameCode} user={user} />}
+					element={
+						<Game
+							gameCode={gameCode}
+							user={user}
+							setKeepChecking={setKeepChecking}
+						/>
+					}
 				/>
 
 				<Route
