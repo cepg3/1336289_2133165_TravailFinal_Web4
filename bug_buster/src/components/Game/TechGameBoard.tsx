@@ -8,13 +8,14 @@ export default function TechGameBoard() {
   // TODO Modifier les valeurs gameId et playerId pour correspondre à votre partie
   const gameId = Number("123");
   const playerId = Number("456");
+  const clientId = Number("789");
 
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h4" gutterBottom>Tableau de jeu</Typography>
       
       <Box display="flex" justifyContent="space-around" alignItems="center" mb={4}>
-        <ClientCard gameId={gameId} playerId={playerId} />
+        <ClientCard gameId={gameId} playerId={clientId} />
         <PlayerPoints gameId={gameId} playerId={playerId} />
       </Box>
 
