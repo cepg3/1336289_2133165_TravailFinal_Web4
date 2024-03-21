@@ -57,7 +57,12 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 
 	const [keepChecking, setKeepChecking] = useState<boolean>(true);
 
-	const [userContext, setUserContext] = React.useState<UserContextType>({ username: "", id: null });
+	const [userContext, setUserContext] = React.useState<UserContextType>({
+		username: "",
+		id: null,
+		is_in_game: false,
+		is_client: false,
+	});
 	const handleUserChange = (user: UserContextType) => {
 		console.log("User name changed to: ", user);
 		setUserContext(user);
@@ -70,15 +75,25 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 	};
 
 	useEffect(() => {
-		if (keepChecking) {
+		if (keepChecking && userContext?.is_in_game) {
 			const checkUser = async () => {
 				console.log("Checking username : ", userContext.username);
 
-				const response = await api.isUsernameTaken(userContext.username);
+				const response = await api.isUsernameTaken(
+					userContext.username
+				);
 				if (response) {
-					console.log("Username already taken : ", userContext.username);
+					console.log(
+						"Username already taken : ",
+						userContext.username
+					);
 					setShowModal(true);
-					handleUserChange({ username: "", id: null });
+					handleUserChange({
+						username: "",
+						id: null,
+						is_in_game: false,
+						is_client: false,
+					});
 				}
 			};
 
@@ -92,10 +107,16 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 				<Route
 					path="/"
 					element={
-						<Login user={userContext} onUserChange={handleUserChange} />
+						<Login
+							user={userContext}
+							onUserChange={handleUserChange}
+						/>
 					}
 				/>
-				<Route path="/dashboard" element={<Dashboard user={userContext} />} />
+				<Route
+					path="/dashboard"
+					element={<Dashboard user={userContext} />}
+				/>
 				<Route
 					path="/join"
 					element={
@@ -130,7 +151,8 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 				<Route
 					path="*"
 					element={
-						userContext?.username != null && userContext?.username !== "" ? (
+						userContext?.username != null &&
+						userContext?.username !== "" ? (
 							<PageNotFound />
 						) : (
 							<Login
