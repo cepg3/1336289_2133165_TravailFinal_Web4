@@ -106,7 +106,7 @@ class api {
 			.patch(
 				`http://localhost:8000/games/${gameId}/join/`,
 				{
-					player_id: playerId,
+					playerId: playerId,
 				},
 				{
 					headers: {
