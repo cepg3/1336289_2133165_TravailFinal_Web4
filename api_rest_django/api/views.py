@@ -76,6 +76,13 @@ class PlayerViewSet(viewsets.ModelViewSet):
             raise models.Player.DoesNotExist
         except models.Player.DoesNotExist:
             return Response({'taken': False})
+    
+    def get_queryset(self):
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            return models.Player.objects.filter(username=username)
+        return models.Player.objects.all()
+    
 
 
 class GameViewSet(viewsets.ModelViewSet):
