@@ -14,14 +14,27 @@ export default function Game({
 	setKeepChecking: (keepChecking: boolean) => void;
 }) {
 	useEffect(() => {
-		// Creates the user in the api
+		// Makes sure the user doesn't exist in the database
+		const checkUser = async () => {
+			console.log("Checking username : ", user.username);
 
-		// Stops checking that the username is taken because the user will have joined a game
-		setKeepChecking(false);
-		console.log("Stopped username verification");
+			const response = await api.isUsernameTaken(user.username);
+			if (response) {
+				console.log("Username already taken : ", user.username);
+				onUserChange({ username: "", id: null });
+				return;
+			}
 
+			// If the user doesn't exist, creates it
+			const newUser = await api.createPlayer(user.username);
 
-	}, []);
+			// Stops checking that the username is taken because the user will have joined a game
+			setKeepChecking(false);
+			console.log("Stopped username verification");
+		};
+
+		checkUser();
+	}, [user, setKeepChecking, onUserChange]);
 
 	return <div>Game</div>;
 }
