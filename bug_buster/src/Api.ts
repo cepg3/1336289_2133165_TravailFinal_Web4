@@ -126,7 +126,7 @@ class api {
 
 	static async startGame(gameId: number): Promise<GameType> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/start/`, {
+			.put(`http://localhost:8000/games/start/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -164,9 +164,24 @@ class api {
 			});
 	}
 
-	static async getPlayers(gameId: number): Promise<PlayerType[]> {
-		//TODO
-		return [];
+	static getPlayers(gameId: number): Promise<PlayerType[]> {
+		return axios
+			.get(`http://localhost:8000/games/${gameId}/players`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				return response.data as PlayerType[];
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la récupération des joueurs. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return [] as PlayerType[];
+			});
 	}
 
 	static async isGameFinished(gameId: number): Promise<boolean> {
