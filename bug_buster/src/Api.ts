@@ -14,7 +14,8 @@ class api {
 			})
 			.catch((error) => {
 				console.error(error);
-				return false;
+				alert("Une erreur s'est produite lors de la vérification de la partie");
+				return true;
 			});
 	}
 
@@ -35,7 +36,8 @@ class api {
 			})
 			.catch((error) => {
 				console.error(error);
-				return false;
+				alert("Une erreur s'est produite lors de la vérification du nom d'utilisateur");
+				return true;
 			});
 	}
 }
