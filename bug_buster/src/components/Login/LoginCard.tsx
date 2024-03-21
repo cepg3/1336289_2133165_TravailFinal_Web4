@@ -23,9 +23,23 @@ export default function LoginCard({
 		user?.username || ""
 	);
 	const handleUserChange = (username: string) => {
+		if (username == null || username === "") {
+			setHasError(true);
+			setTimeout(() => {
+				setHasError(false);
+			}, 50);
+			setTimeout(() => {
+				setHasError(true);
+			}, 100);
+
+			return;
+		}
+
 		onUserChange({ username: tempUsername });
 		navigate("/dashboard");
 	};
+
+	const [hasError, setHasError] = useState<boolean>(false);
 
 	return (
 		<Card
@@ -49,6 +63,7 @@ export default function LoginCard({
 							handleUserChange(tempUsername);
 						}
 					}}
+					error={hasError}
 				/>
 			</CardContent>
 			<CardActions sx={{ justifyContent: "center" }}>
