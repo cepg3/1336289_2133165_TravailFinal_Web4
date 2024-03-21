@@ -84,6 +84,8 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 
 			checkUser();
 		}
+
+		console.log(api.getPlayer("allo"));
 	}, [user, location, keepChecking]);
 
 	if (user?.username != null && user?.username !== "") {
