@@ -168,6 +168,18 @@ class GameViewSet(viewsets.ModelViewSet):
                 return Response(status=400)
         except models.Game.DoesNotExist:
             return Response(status=404)
+    
+    @action(detail=True, methods=['get'], url_path='by_join_code')
+    def by_join_code(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the join code is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            game = models.Game.objects.get(join_code=pk)
+            return Response(self.serializer_class(game).data)
+        except models.Game.DoesNotExist:
+            return Response(status=404)
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
