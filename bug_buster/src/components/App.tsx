@@ -57,10 +57,10 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 
 	const [keepChecking, setKeepChecking] = useState<boolean>(true);
 
-	const [user, setUser] = React.useState<UserContextType>({ username: "" });
+	const [userContext, setUserContext] = React.useState<UserContextType>({ username: "", id: null });
 	const handleUserChange = (user: UserContextType) => {
 		console.log("User name changed to: ", user);
-		setUser(user);
+		setUserContext(user);
 	};
 
 	const [gameCode, setGameCode] = React.useState<string>("");
@@ -72,30 +72,32 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 	useEffect(() => {
 		if (keepChecking) {
 			const checkUser = async () => {
-				console.log("Checking username : ", user.username);
+				console.log("Checking username : ", userContext.username);
 
-				const response = await api.isUsernameTaken(user.username);
+				const response = await api.isUsernameTaken(userContext.username);
 				if (response) {
-					console.log("Username already taken : ", user.username);
+					console.log("Username already taken : ", userContext.username);
 					setShowModal(true);
-					handleUserChange({ username: "" });
+					handleUserChange({ username: "", id: null });
 				}
 			};
 
 			checkUser();
-		}
-	}, [user, location, keepChecking]);
 
-	if (user?.username != null && user?.username !== "") {
+			api.setPlayerIsInGame(3)
+		}
+	}, [userContext, location, keepChecking]);
+
+	if (userContext?.username != null && userContext?.username !== "") {
 		return (
 			<Routes>
 				<Route
 					path="/"
 					element={
-						<Login user={user} onUserChange={handleUserChange} />
+						<Login user={userContext} onUserChange={handleUserChange} />
 					}
 				/>
-				<Route path="/dashboard" element={<Dashboard user={user} />} />
+				<Route path="/dashboard" element={<Dashboard user={userContext} />} />
 				<Route
 					path="/join"
 					element={
@@ -119,7 +121,7 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 					element={
 						<Game
 							gameCode={gameCode}
-							user={user}
+							user={userContext}
 							setKeepChecking={setKeepChecking}
 						/>
 					}
@@ -128,11 +130,11 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 				<Route
 					path="*"
 					element={
-						user?.username != null && user?.username !== "" ? (
+						userContext?.username != null && userContext?.username !== "" ? (
 							<PageNotFound />
 						) : (
 							<Login
-								user={user}
+								user={userContext}
 								onUserChange={handleUserChange}
 							/>
 						)
@@ -141,7 +143,7 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 			</Routes>
 		);
 	} else {
-		return <Login user={user} onUserChange={handleUserChange} />;
+		return <Login user={userContext} onUserChange={handleUserChange} />;
 	}
 }
 
