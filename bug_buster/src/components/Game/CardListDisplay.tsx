@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Grid } from '@mui/material';
-import GameCardList from './GameCardList';
-import api from '../../Api';
-import { GameCardType } from '../../Api';
+import React, { useState, useEffect } from "react";
+import { Grid } from "@mui/material";
+import GameCardList from "./GameCardList";
+import api from "../../Api";
+import { GameCardType } from "../../Api";
 
-export default function CardListDisplay({ gameId, playerId }: { gameId: number; playerId: number }) {
+export default function CardListDisplay({
+  gameId,
+  playerId,
+}: {
+  gameId: number;
+  playerId: number;
+}) {
   const [cards, setCards] = useState<GameCardType[]>([]);
 
   useEffect(() => {
@@ -16,9 +22,9 @@ export default function CardListDisplay({ gameId, playerId }: { gameId: number; 
     fetchPlayerCards();
   }, [gameId, playerId]);
 
-  const cardsStart = cards.filter(card => card.cardCategory === 'Start');
-  const cardsMiddle = cards.filter(card => card.cardCategory === 'Middle');
-  const cardsEnd = cards.filter(card => card.cardCategory === 'End');
+  const cardsStart = cards.filter((card) => card.cardCategory === "Start");
+  const cardsMiddle = cards.filter((card) => card.cardCategory === "Middle");
+  const cardsEnd = cards.filter((card) => card.cardCategory === "End");
 
   return (
     <Grid container spacing={2}>

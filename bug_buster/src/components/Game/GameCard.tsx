@@ -1,8 +1,6 @@
 import React from "react";
 import { Card as MuiCard, CardContent, Typography } from "@mui/material";
-import {GameCardType} from "../../Api";
-
-
+import { GameCardType } from "../../Api";
 
 const getBorderColor = (cardType: string): string => {
   switch (cardType) {
@@ -22,7 +20,7 @@ const getBorderColor = (cardType: string): string => {
 };
 
 export default function GameCard({
-  gameCardType
+  gameCardType,
 }: {
   gameCardType: GameCardType;
 }) {

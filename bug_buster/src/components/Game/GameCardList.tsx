@@ -3,11 +3,7 @@ import { Typography, Box } from "@mui/material";
 import GameCardRadioButton from "./GameCardRadioButton";
 import { GameCardType } from "../../Api";
 
-export default function GameCardList({
-  cards,
-}: {
-  cards: GameCardType[];
-}) {
+export default function GameCardList({ cards }: { cards: GameCardType[] }) {
   return (
     <Box sx={{ margin: 2 }}>
       <Typography variant="h5" gutterBottom>
