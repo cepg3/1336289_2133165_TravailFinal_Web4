@@ -104,7 +104,7 @@ class api {
 	static async joinGame(gameId: number, playerId: number): Promise<GameType> {
 		return axios
 			.patch(
-				`http://localhost:8000/games/${gameId}/join`,
+				`http://localhost:8000/games/${gameId}/join/`,
 				{
 					player_id: playerId,
 				},
