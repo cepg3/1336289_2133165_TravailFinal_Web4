@@ -200,7 +200,7 @@ class api {
 
 	// Function to get cards from a player in a game
 	static async getPlayerCards(
-		gameId: string,
+		gameId: number,
 		playerId: number
 	): Promise<GameCardType[]> {
 		return axios
