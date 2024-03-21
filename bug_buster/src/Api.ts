@@ -101,7 +101,7 @@ class api {
 			});
 	}
 
-	static async joinGame(gameId: string, username: string): Promise<GameType> {
+	static async joinGame(gameId: number, playerId: number): Promise<GameType> {
 		//TODO
 		return {} as GameType;
 	}
@@ -156,7 +156,7 @@ class api {
 			.patch(
 				`http://localhost:8000/players/${id}/`,
 				{
-					is_in_game: true
+					is_in_game: true,
 				},
 				{
 					headers: {

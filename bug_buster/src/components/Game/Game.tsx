@@ -5,13 +5,13 @@ import api from "../../Api";
 export default function Game({
 	gameCode,
 	user,
-	onUserChange,
+	setUser,
 	keepChecking,
 	setKeepChecking,
 }: {
 	gameCode: string;
 	user: UserContextType;
-	onUserChange: (user: UserContextType) => void;
+	setUser: (user: UserContextType) => void;
 	keepChecking: boolean;
 	setKeepChecking: (keepChecking: boolean) => void;
 }) {
@@ -21,24 +21,53 @@ export default function Game({
 			if (keepChecking) {
 				console.log("Checking username : ", user.username);
 
-				const response = await api.isUsernameTaken(user.username);
+				const response = await api
+					.isUsernameTaken(user.username)
+					.then(async (response) => {
+						if (response) {
+							console.log(
+								"Username already taken : ",
+								user.username
+							);
+							setUser({ username: "", id: null });
+							return false;
+						}
+
+						// Creates the user if it doesn't exist
+						const newUser = await api.createPlayer(user.username);
+						setUser({ username: newUser.username, id: newUser.id });
+
+						setKeepChecking(false);
+						console.log("Stopped username verification");
+
+						return true;
+					});
+
 				if (response) {
-					console.log("Username already taken : ", user.username);
-					onUserChange({ username: "", id: null });
-					return;
+					console.log("User created : ", user.username);
 				}
 
-				// If the user doesn't exist, creates it
-				const newUser = await api.createPlayer(user.username);
+				// Creates the game
+				const newGame = await api
+					.doesGameExist(gameCode)
+					.then(async (response) => {
+						if (!response) {
+							console.log("Creating game : ", gameCode);
+							const newGame = await api.createGame(gameCode);
+							console.log("Game created : ", gameCode);
+							return newGame;
+						}
 
-				// Stops checking that the username is taken because the user will have joined a game
-				setKeepChecking(false);
-				console.log("Stopped username verification");
+						return await api.getGame(gameCode);
+					});
+
+				// Adds the user to the game
+				await api.joinGame(newGame.id, user.id as number);
 			}
 		};
 
 		checkUser();
-	}, [user, setKeepChecking, onUserChange]);
+	}, [user, keepChecking, setKeepChecking, setUser, gameCode]);
 
 	return <div>Game</div>;
 }
