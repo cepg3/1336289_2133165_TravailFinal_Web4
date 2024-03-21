@@ -176,6 +176,28 @@ class api {
 				return {} as PlayerType;
 			});
 	}
+
+	// Function to get cards from a player in a game
+	static async getPlayerCards(gameId: string, playerId: number): Promise<GameCardType[]> {
+		return axios
+			.get(`http://localhost:8000/games/${gameId}/players/${playerId}/cards`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				return response.data as GameCardType[];
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la récupération des cartes du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return [] as GameCardType[];
+			});
+	}
+	
 }
 
 export interface GameType {
