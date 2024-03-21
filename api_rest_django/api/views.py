@@ -206,6 +206,9 @@ class GameViewSet(viewsets.ModelViewSet):
                     player.middle_card = middleCards.order_by('?').first()
                     player.end_card = endCards.order_by('?').first()
                     player.save()
+            
+            # Makes a random player the client
+            game.current_client_player = game.players.order_by('?').first()
                 
             return Response(self.serializer_class(game).data)
         except models.Game.DoesNotExist:
