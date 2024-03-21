@@ -1,13 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { UserContextType } from "../Login/UserContext";
+import api from "../../Api";
 
 export default function Game({
 	gameCode,
 	user,
+	onUserChange,
 	setKeepChecking,
 }: {
 	gameCode: string;
 	user: UserContextType;
+	onUserChange: (user: UserContextType) => void;
 	setKeepChecking: (keepChecking: boolean) => void;
 }) {
 	useEffect(() => {
