@@ -11,8 +11,13 @@ export default function Game({
 	setKeepChecking: (keepChecking: boolean) => void;
 }) {
 	useEffect(() => {
+		// Creates the user in the api
+
+		// Stops checking that the username is taken because the user will have joined a game
 		setKeepChecking(false);
 		console.log("Stopped username verification");
+
+
 	}, []);
 
 	return <div>Game</div>;
