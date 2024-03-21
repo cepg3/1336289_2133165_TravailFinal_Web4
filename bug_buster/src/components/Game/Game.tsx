@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { UserContextType } from "../Login/UserContext";
-import api from "../../Api";
+import api, { PlayerType } from "../../Api";
 
 export default function Game({
 	gameCode,
@@ -21,7 +21,7 @@ export default function Game({
 			if (keepChecking) {
 				console.log("Checking username : ", user.username);
 
-				const response = await api
+				const dbUser = await api
 					.isUsernameTaken(user.username)
 					.then(async (response) => {
 						if (response) {
@@ -30,7 +30,7 @@ export default function Game({
 								user.username
 							);
 							setUser({ username: "", id: null });
-							return false;
+							return null;
 						}
 
 						// Creates the user if it doesn't exist
@@ -40,29 +40,36 @@ export default function Game({
 						setKeepChecking(false);
 						console.log("Stopped username verification");
 
-						return true;
-					});
-
-				if (response) {
-					console.log("User created : ", user.username);
-				}
-
-				// Creates the game
-				const newGame = await api
-					.doesGameExist(gameCode)
+						return newUser;
+					})
 					.then(async (response) => {
-						if (!response) {
-							console.log("Creating game : ", gameCode);
-							const newGame = await api.createGame(gameCode);
-							console.log("Game created : ", gameCode);
-							return newGame;
+						if (response != null) {
+							console.log("User created : ", user.username);
 						}
 
-						return await api.getGame(gameCode);
+						return response;
 					});
 
-				// Adds the user to the game
-				await api.joinGame(newGame.id, user.id as number);
+				if (dbUser != null) {
+					// Makes sure the game exists
+					await api
+						.doesGameExist(gameCode)
+						.then(async (response) => {
+							if (!response) {
+								console.log("Creating game : ", gameCode);
+								const newGame = await api.createGame(gameCode);
+								console.log("Game created : ", gameCode);
+								return newGame;
+							}
+
+							return await api.getGame(gameCode);
+						})
+						.then(async (response) => {
+							if (response?.id != null && dbUser.id != null) {
+								await api.joinGame(response.id, dbUser.id);
+							}
+						});
+				}
 			}
 		};
 
