@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { UserContextType } from "../Login/UserContext";
 
 export default function Game({
@@ -10,5 +10,10 @@ export default function Game({
 	user: UserContextType;
 	setKeepChecking: (keepChecking: boolean) => void;
 }) {
+	useEffect(() => {
+		setKeepChecking(false);
+		console.log("Stopped username verification");
+	}, []);
+
 	return <div>Game</div>;
 }
