@@ -44,6 +44,54 @@ class api {
 				return true;
 			});
 	}
+
+	static async createGame(gameId: string): Promise<GameType> {
+		//TODO
+		return {} as GameType;
+	}
+
+	static async createPlayer(username: string): Promise<PlayerType> {
+		//TODO
+		return {} as PlayerType;
+	}
+
+	static async joinGame(gameId: string, username: string): Promise<GameType> {
+		//TODO
+		return {} as GameType;
+	}
+
+	static async startGame(gameId: string): Promise<GameType> {
+		//TODO
+		return {} as GameType;
+	}
+
+	static async getGame(gameId: string): Promise<GameType> {
+		//TODO
+		return {} as GameType;
+	}
+
+	static async getPlayers(gameId: string): Promise<PlayerType[]> {
+		//TODO
+		return [];
+	}
+
+	static async isGameFinished(gameId: string): Promise<boolean> {
+		//TODO
+		return false;
+	}
+
+	static async getGameWinnerUsername(gameId: string): Promise<string> {
+		//TODO
+		return "";
+	}
+}
+
+interface GameType {
+	//TODO
+}
+
+interface PlayerType {
+	//TODO
 }
 
 export default api;
