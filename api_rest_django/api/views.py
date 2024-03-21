@@ -180,6 +180,36 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response(self.serializer_class(game).data)
         except models.Game.DoesNotExist:
             return Response(status=404)
+    
+    @action(detail=True, methods=['put'], url_path='start')
+    def start(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the join code is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            game = models.Game.objects.get(id=pk)
+            game.is_started = True
+            game.save()
+            for player in game.players.all():
+                player.is_in_game = True
+                player.save()
+                
+            # Give all the cards randomly to the players
+            startCards = models.StartCard.objects.all()
+            middleCards = models.MiddleCard.objects.all()
+            endCards = models.EndCard.objects.all()
+            
+            for player in game.players.all():
+                for _ in range(3):
+                    player.start_card = startCards.order_by('?').first()
+                    player.middle_card = middleCards.order_by('?').first()
+                    player.end_card = endCards.order_by('?').first()
+                    player.save()
+                
+            return Response(self.serializer_class(game).data)
+        except models.Game.DoesNotExist:
+            return Response(status=404)
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
