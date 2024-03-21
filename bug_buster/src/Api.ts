@@ -20,7 +20,7 @@ class api {
 
 	static async isUsernameTaken(username: string): Promise<boolean> {
 		return axios
-			.get(`http://localhost:8000/users/${username}/taken`, {
+			.get(`http://localhost:8000/players/${username}/taken`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
