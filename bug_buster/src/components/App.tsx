@@ -120,6 +120,7 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 						<Game
 							gameCode={gameCode}
 							user={userContext}
+							onUserChange={handleUserChange}
 							setKeepChecking={setKeepChecking}
 						/>
 					}
