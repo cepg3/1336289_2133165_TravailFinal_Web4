@@ -14,7 +14,9 @@ class api {
 			})
 			.catch((error) => {
 				console.error(error);
-				alert("Une erreur s'est produite lors de la vérification de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer.");
+				alert(
+					"Une erreur s'est produite lors de la vérification de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
 				return true;
 			});
 	}
@@ -36,7 +38,9 @@ class api {
 			})
 			.catch((error) => {
 				console.error(error);
-				alert("Une erreur s'est produite lors de la vérification du nom d'utilisateur. Veuillez vérifier votre connexion Internet et à l'api et réessayer.");
+				alert(
+					"Une erreur s'est produite lors de la vérification du nom d'utilisateur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
 				return true;
 			});
 	}
