@@ -181,7 +181,7 @@ class GameViewSet(viewsets.ModelViewSet):
         except models.Game.DoesNotExist:
             return Response(status=404)
     
-    @action(detail=True, methods=['put'], url_path='start')
+    @action(detail=True, methods=['get'], url_path='start')
     def start(self, request, pk=None):
         if not isinstance(pk, str):
             # If the join code is not a string, return a 404
@@ -202,10 +202,10 @@ class GameViewSet(viewsets.ModelViewSet):
             
             for player in game.players.all():
                 for _ in range(3):
-                    player.start_card = startCards.order_by('?').first()
-                    player.middle_card = middleCards.order_by('?').first()
-                    player.end_card = endCards.order_by('?').first()
-                    player.save()
+                    player.cards.add(startCards.order_by('?').first())
+                    player.cards.add(middleCards.order_by('?').first())
+                    player.cards.add(endCards.order_by('?').first())
+                player.save()
             
             # Makes a random player the client
             game.current_client_player = game.players.order_by('?').first()
