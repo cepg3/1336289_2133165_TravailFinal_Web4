@@ -213,6 +213,18 @@ class GameViewSet(viewsets.ModelViewSet):
             return Response(self.serializer_class(game).data)
         except models.Game.DoesNotExist:
             return Response(status=404)
+        
+    @action(detail=True, methods=['get'], url_path='players')
+    def players(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the join code is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            game = models.Game.objects.get(id=pk)
+            return Response(serializers.PlayerSerializer(game.players.all(), many=True).data)
+        except models.Game.DoesNotExist:
+            return Response(status=404)
 
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
