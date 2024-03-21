@@ -274,6 +274,7 @@ export interface GameType {
 	payer_ids: number[];
 	current_client_player_id: number;
 	points_to_win: number;
+	is_started: boolean;
 }
 
 export interface PlayerType {
