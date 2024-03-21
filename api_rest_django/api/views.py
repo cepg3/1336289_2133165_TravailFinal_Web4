@@ -144,6 +144,31 @@ class GameViewSet(viewsets.ModelViewSet):
         
         return super().list(request, *args, **kwargs)
 
+    @action(detail=True, methods=['patch'], url_path='join')
+    def join(self, request, pk=None):
+        if not isinstance(pk, str):
+            # If the join code is not a string, return a 404
+            return Response(status=404)
+        
+        try:
+            game = models.Game.objects.get(id=pk)
+            if game.players.count() < 6:
+                # Get the player id from the request body
+                playerId = request.data.get('playerId', None)
+                if playerId is not None:
+                    player = models.Player.objects.get(id=playerId)
+                    player.is_in_game = True
+                    player.save()
+                    game.players.add(player)
+                    game.save()
+                    return Response(self.serializer_class(game).data)
+                else:
+                    return Response(status=400)
+            else:
+                return Response(status=400)
+        except models.Game.DoesNotExist:
+            return Response(status=404)
+
 
 class LeaderBoardPointsViewSet(viewsets.ModelViewSet):
     """
