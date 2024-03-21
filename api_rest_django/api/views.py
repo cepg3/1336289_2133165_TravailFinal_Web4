@@ -189,7 +189,6 @@ class GameViewSet(viewsets.ModelViewSet):
         
         try:
             game = models.Game.objects.get(id=pk)
-            game.is_started = True
             game.save()
             for player in game.players.all():
                 player.is_in_game = True
