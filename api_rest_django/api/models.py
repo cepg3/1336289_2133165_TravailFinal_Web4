@@ -72,7 +72,7 @@ class Player(models.Model):
     
     The is_in_game field is used to check if the player is in a game or not.
     """
-    username = models.CharField(max_length=20)
+    username = models.CharField(max_length=20, unique=True)
     is_in_game = models.BooleanField(default=False)
     cards = models.ManyToManyField(Card, related_name='players', blank=True)
     points = models.IntegerField(default=0)
@@ -90,7 +90,7 @@ class Game(models.Model):
     The is_possible_to_join field is used to check if it is possible to join the game.
     The current_client_player field is used to store the player that is the client player at the moment.
     """
-    join_code = models.CharField(max_length=6)
+    join_code = models.CharField(max_length=6, unique=True)
     players = models.ManyToManyField(Player, related_name='games', blank=True)
     is_possible_to_join = models.BooleanField(default=True)
     current_client_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='current_game', null=True)
