@@ -75,7 +75,7 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 	};
 
 	useEffect(() => {
-		if (keepChecking && userContext?.is_in_game) {
+		if (keepChecking && !userContext?.is_in_game) {
 			const checkUser = async () => {
 				console.log("Checking username : ", userContext.username);
 
@@ -88,12 +88,6 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 						userContext.username
 					);
 					setShowModal(true);
-					handleUserChange({
-						username: "",
-						id: null,
-						is_in_game: false,
-						is_client: false,
-					});
 				}
 			};
 
