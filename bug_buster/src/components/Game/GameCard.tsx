@@ -1,10 +1,11 @@
 import React from "react";
 import { Card as MuiCard, CardContent, Typography } from "@mui/material";
+import {GameCardType} from "../../Api";
 
-type CardType = "Bug" | "User" | "Start" | "Middle" | "End";
 
-const getBorderColor = (type: CardType): string => {
-  switch (type) {
+
+const getBorderColor = (cardType: string): string => {
+  switch (cardType) {
     case "Bug":
       return "red";
     case "User":
@@ -21,25 +22,23 @@ const getBorderColor = (type: CardType): string => {
 };
 
 export default function GameCard({
-  text,
-  type,
+  gameCardType
 }: {
-  text: string;
-  type: CardType;
+  gameCardType: GameCardType;
 }) {
   return (
     <MuiCard
       style={{
         width: "300px",
         margin: "20px",
-        border: `2px solid ${getBorderColor(type)}`,
+        border: `2px solid ${getBorderColor(gameCardType.cardCategory)}`,
         display: "inline-block",
         transform: "rotate(-90deg)",
       }}
     >
       <CardContent>
         <Typography variant="body2" component="p">
-          {text}
+          {gameCardType.text}
         </Typography>
       </CardContent>
     </MuiCard>

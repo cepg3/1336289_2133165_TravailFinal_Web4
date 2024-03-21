@@ -178,7 +178,7 @@ class api {
 	}
 }
 
-interface GameType {
+export interface GameType {
 	id: number;
 	join_code: string;
 	payer_ids: number[];
@@ -186,14 +186,14 @@ interface GameType {
 	points_to_win: number;
 }
 
-interface PlayerType {
+export interface PlayerType {
 	id: number;
 	username: string;
 	cards: GameCardType[];
 	points: number;
 }
 
-interface GameCardType {
+export interface GameCardType {
 	id: number;
 	text: string;
 	cardCategory: string;
