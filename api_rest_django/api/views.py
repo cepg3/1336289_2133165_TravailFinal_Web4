@@ -163,7 +163,7 @@ class GameViewSet(viewsets.ModelViewSet):
                     game.save()
                     return Response(self.serializer_class(game).data)
                 else:
-                    return Response(status=400)
+                    return Response(self.serializer_class(game).data)
             else:
                 return Response(status=400)
         except models.Game.DoesNotExist:
