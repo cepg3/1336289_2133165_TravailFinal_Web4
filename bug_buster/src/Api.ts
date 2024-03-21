@@ -130,6 +130,26 @@ class api {
 		//TODO
 		return "";
 	}
+
+	static async getPlayer(username: string): Promise<PlayerType> {
+		return axios
+			.get(`http://localhost:8000/players?username=${username}`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				return response.data as PlayerType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la récupération du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as PlayerType;
+			});
+	}
 }
 
 interface GameType {
