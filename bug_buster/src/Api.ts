@@ -126,7 +126,7 @@ class api {
 
 	static async startGame(gameId: number): Promise<GameType> {
 		return axios
-			.put(`http://localhost:8000/games/start/`, {
+			.get(`http://localhost:8000/games/${gameId}/start/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -203,7 +203,7 @@ class api {
 				},
 			})
 			.then((response) => {
-				return response.data as PlayerType;
+				return response.data[0] as PlayerType;
 			})
 			.catch((error) => {
 				console.error(error);
@@ -241,30 +241,11 @@ class api {
 	}
 
 	// Function to get cards from a player in a game
-	static async getPlayerCards(
-		gameId: number,
-		playerId: number
-	): Promise<GameCardType[]> {
-		return axios
-			.get(
-				`http://localhost:8000/games/${gameId}/players/${playerId}/cards`,
-				{
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-				}
-			)
-			.then((response) => {
-				return response.data as GameCardType[];
-			})
-			.catch((error) => {
-				console.error(error);
-				alert(
-					"Une erreur s'est produite lors de la récupération des cartes du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
-				);
-				return [] as GameCardType[];
-			});
+	static async getPlayerCards(playerId: number): Promise<GameCardType[]> {
+		return (
+			(await axios.get(`http://localhost:8000/players/${playerId}/`))
+				.data as PlayerType
+		).cards;
 	}
 }
 
