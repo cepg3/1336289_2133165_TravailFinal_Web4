@@ -15,7 +15,8 @@ export default function ClientCard({
 
   useEffect(() => {
     const fetchPlayerCards = async () => {
-      const playerCards = await api.getPlayerCards(gameId, playerId);
+      if (gameId === 0 || playerId === 0 || playerId == null || gameId == null) return;
+      const playerCards = await api.getPlayerCards(playerId);
       setCards(playerCards);
     };
 
