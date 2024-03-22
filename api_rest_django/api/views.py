@@ -77,12 +77,13 @@ class PlayerViewSet(viewsets.ModelViewSet):
         except models.Player.DoesNotExist:
             return Response({'taken': False})
     
-    def get_queryset(self):
+    def get(self):
         username = self.request.query_params.get('username', None)
+        player = models.Player.objects.get(username=username)
         if username is not None:
-            return models.Player.objects.filter(username=username)
-        return models.Player.objects.all()
-    
+            if models.Player.objects.get(username=username):
+                return models.Player.objects.filter(username=username)
+        return super().get()
 
 
 class GameViewSet(viewsets.ModelViewSet):
@@ -208,6 +209,7 @@ class GameViewSet(viewsets.ModelViewSet):
             
             # Makes a random player the client
             game.current_client_player = game.players.order_by('?').first()
+            game.save()
                 
             return Response(self.serializer_class(game).data)
         except models.Game.DoesNotExist:
