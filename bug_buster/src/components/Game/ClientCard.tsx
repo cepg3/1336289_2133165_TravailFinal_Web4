@@ -6,28 +6,23 @@ import { GameCardType } from "../../Api";
 
 export default function ClientCard({
   gameId,
-  playerId,
 }: {
   gameId: number;
-  playerId: number;
 }) {
   const [cards, setCards] = useState<GameCardType[]>([]);
 
 
   useEffect(() => {
     const fetchPlayerCards = async () => {
-      if (gameId === 0 || playerId === 0 || playerId == null || gameId == null) return;
+      if (gameId === 0 || gameId == null) return;
 
-      const playerCards = await api.getGameCards(gameId);
+      const clientCard = await api.getGameCards(gameId);
 
-      // Log the playerCards
-      console.log("playerCards: ", playerCards);
-
-      setCards(playerCards);
+      setCards(clientCard);
     };
 
     fetchPlayerCards();
-  }, [gameId, playerId]);
+  }, [gameId]);
 
   const userCard = cards.find((card) => card.cardCategory === "Bug");
   const bugCard = cards.find((card) => card.cardCategory === "User");
