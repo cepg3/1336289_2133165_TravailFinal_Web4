@@ -11,7 +11,7 @@ export default function TechGameBoard({ gameId, playerId, clientId }: { gameId: 
       <Typography variant="h4" gutterBottom>Tableau de jeu</Typography>
       
       <Box display="flex" justifyContent="space-around" alignItems="center" mb={4}>
-        <ClientCard gameId={gameId} playerId={clientId} />
+        <ClientCard gameId={gameId} />
         <PlayerPoints playerId={playerId} />
       </Box>
 
