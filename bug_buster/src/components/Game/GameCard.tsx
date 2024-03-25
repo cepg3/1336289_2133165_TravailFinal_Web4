@@ -28,10 +28,10 @@ export default function GameCard({
     <MuiCard
       style={{
         width: "300px",
+        height: "150px",
         margin: "20px",
-        border: `2px solid ${getBorderColor(gameCardType.cardCategory)}`,
+        border: `10px solid ${getBorderColor(gameCardType.cardCategory)}`,
         display: "inline-block",
-        transform: "rotate(-90deg)",
       }}
     >
       <CardContent>

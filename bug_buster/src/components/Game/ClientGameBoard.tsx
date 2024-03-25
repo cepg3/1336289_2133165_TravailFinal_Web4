@@ -11,7 +11,7 @@ export default function ClientGameBoard({ gameId, playerId }: { gameId: number; 
       
       <ClientCard gameId={gameId} playerId={playerId} />
 
-      <PlayerPoints gameId={gameId} playerId={playerId} />
+      <PlayerPoints playerId={playerId} />
     </Box>
   );
 }

@@ -190,6 +190,14 @@ class GameViewSet(viewsets.ModelViewSet):
         
         try:
             game = models.Game.objects.get(id=pk)
+            
+            #Give random randomly 1 bug card and 1 user card to the game
+            bugCards = models.BugCard.objects.all()
+            userCards = models.UserCard.objects.all()
+            
+            game.cards.add(bugCards.order_by('?').first())
+            game.cards.add(userCards.order_by('?').first())
+            
             game.save()
             for player in game.players.all():
                 player.is_in_game = True
@@ -206,6 +214,7 @@ class GameViewSet(viewsets.ModelViewSet):
                     player.cards.add(middleCards.order_by('?').first())
                     player.cards.add(endCards.order_by('?').first())
                 player.save()
+                
             
             # Makes a random player the client
             game.current_client_player = game.players.order_by('?').first()

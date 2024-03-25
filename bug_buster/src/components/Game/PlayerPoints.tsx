@@ -1,35 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
-import GameCard from "./GameCard";
+import { Box, Typography } from "@mui/material";
 import api from "../../Api";
-import { GameCardType } from "../../Api";
 
-export default function ClientCard({
-  gameId,
-  playerId,
-}: {
-  gameId: number;
-  playerId: number;
-}) {
-  const [cards, setCards] = useState<GameCardType[]>([]);
+export default function PlayerPoints({ playerId }: { playerId: number }) {
+  const [playerPoints, setPlayerPoints] = useState<number>(0);
 
   useEffect(() => {
-    const fetchPlayerCards = async () => {
-      if (gameId === 0 || playerId === 0 || playerId == null || gameId == null) return;
-      const playerCards = await api.getPlayerCards(playerId);
-      setCards(playerCards);
+    const fetchPlayerPoints = async () => {
+      if (playerId === 0 || playerId == null) return;
+
+      try {
+        const player = await api.getPlayerById(playerId);
+        setPlayerPoints(player.points);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des points du joueur:", error);
+      }
     };
 
-    fetchPlayerCards();
-  }, [gameId, playerId]);
-
-  const userCard = cards.find((card) => card.cardCategory === "User");
-  const bugCard = cards.find((card) => card.cardCategory === "Bug");
+    fetchPlayerPoints();
+  }, [playerId]);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="center">
-      {userCard && <GameCard gameCardType={userCard} />}
-      {bugCard && <GameCard gameCardType={bugCard} />}
+      <Typography variant="h6">Points: {playerPoints}</Typography>
     </Box>
   );
 }

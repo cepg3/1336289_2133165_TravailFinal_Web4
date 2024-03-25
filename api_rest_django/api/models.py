@@ -96,6 +96,8 @@ class Game(models.Model):
     current_client_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='current_game', null=True)
     points_to_win = models.IntegerField(default=10)
     last_played = models.DateTimeField(auto_now=True)
+    cards = models.ManyToManyField(Card, related_name='games', blank=True)
+    
     
     @property
     def is_started(self):

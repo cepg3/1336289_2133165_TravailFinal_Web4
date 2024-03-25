@@ -12,7 +12,7 @@ export default function TechGameBoard({ gameId, playerId, clientId }: { gameId: 
       
       <Box display="flex" justifyContent="space-around" alignItems="center" mb={4}>
         <ClientCard gameId={gameId} playerId={clientId} />
-        <PlayerPoints gameId={gameId} playerId={playerId} />
+        <PlayerPoints playerId={playerId} />
       </Box>
 
       <CardListDisplay gameId={gameId} playerId={playerId} />
