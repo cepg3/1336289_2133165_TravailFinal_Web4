@@ -9,7 +9,7 @@ export default function ClientGameBoard({ gameId, playerId }: { gameId: number; 
     <Box sx={{ padding: 2 }}>
       <Typography variant="h4" gutterBottom>Tableau de jeu du Client</Typography>
       
-      <ClientCard gameId={gameId} playerId={playerId} />
+      <ClientCard gameId={gameId} />
 
       <PlayerPoints playerId={playerId} />
     </Box>
