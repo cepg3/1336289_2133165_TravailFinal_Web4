@@ -21,28 +21,27 @@ export default function Game({
   const [game, setGame] = React.useState<GameType | null>(null);
 
   const handleStartGame = async () => {
-	if (game && user.id !== null && user.id !== undefined) {
-	  await api.startGame(game.id);
-	  
-	  if (!game.current_client_player_id) {
-		setGame({
-		  ...game,
-		  is_started: true,
-		  current_client_player_id: user.id,
-		});
-	  } else {
-		setGame({
-		  ...game,
-		  is_started: true,
-		});
-	  }
-	} else {
-	  console.error(
-		"Erreur : Le jeu n'est pas défini ou l'ID de l'utilisateur est indéfini."
-	  );
-	}
+    if (game && user.id !== null && user.id !== undefined) {
+      await api.startGame(game.id);
+
+      if (!game.current_client_player_id) {
+        setGame({
+          ...game,
+          is_started: true,
+          current_client_player_id: user.id,
+        });
+      } else {
+        setGame({
+          ...game,
+          is_started: true,
+        });
+      }
+    } else {
+      console.error(
+        "Erreur : Le jeu n'est pas défini ou l'ID de l'utilisateur est indéfini."
+      );
+    }
   };
-  
 
   useEffect(() => {
     if (!keepChecking) return;
