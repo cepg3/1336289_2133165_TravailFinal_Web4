@@ -164,6 +164,26 @@ class api {
 			});
 	}
 
+	static async updateGame(gameId: number, gameData: Partial<GameType>): Promise<GameType> {
+		return axios
+		  .patch(`http://localhost:8000/games/${gameId}/`, gameData, {
+			headers: {
+			  Accept: "application/json",
+			  "Content-Type": "application/json",
+			},
+		  })
+		  .then((response) => {
+			return response.data as GameType;
+		  })
+		  .catch((error) => {
+			console.error("Erreur lors de la mise à jour du jeu :", error);
+			alert(
+			  "Une erreur s'est produite lors de la mise à jour de la partie. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+			);
+			return {} as GameType;
+		  });
+	  }
+	  
 	static getPlayers(gameId: number): Promise<PlayerType[]> {
 		return axios
 			.get(`http://localhost:8000/games/${gameId}/players`, {
@@ -214,6 +234,27 @@ class api {
 			});
 	}
 
+	// Function to get player using the player id
+	static async getPlayerById(playerId: number): Promise<PlayerType> {
+		return axios
+			.get(`http://localhost:8000/players/${playerId}/`, {
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				return response.data as PlayerType;
+			})
+			.catch((error) => {
+				console.error(error);
+				alert(
+					"Une erreur s'est produite lors de la récupération du joueur. Veuillez vérifier votre connexion Internet et à l'api et réessayer."
+				);
+				return {} as PlayerType;
+			});
+	}
+
 	static async setPlayerIsInGame(id: number): Promise<PlayerType> {
 		return axios
 			.patch(
@@ -247,6 +288,13 @@ class api {
 				.data as PlayerType
 		).cards;
 	}
+
+	// Function to get cards from the game
+	static async getGameCards(gameId: number): Promise<GameCardType[]> {
+		return (
+			(await axios.get(`http://localhost:8000/games/${gameId}/`)).data as GameType
+		).cards;
+	}
 }
 
 export interface GameType {
@@ -256,6 +304,7 @@ export interface GameType {
 	current_client_player_id: number;
 	points_to_win: number;
 	is_started: boolean;
+	cards: GameCardType[];
 }
 
 export interface PlayerType {
