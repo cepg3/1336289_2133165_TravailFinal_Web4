@@ -64,29 +64,22 @@ function Main({ setShowModal }: { setShowModal: (show: boolean) => void }) {
 		is_client: false,
 	});
 	const handleUserChange = (user: UserContextType) => {
-		console.log("User name changed to: ", user);
 		setUserContext(user);
 	};
 
 	const [gameCode, setGameCode] = React.useState<string>("");
 	const handleGameCodeChange = (gameCode: string) => {
-		console.log("Game code changed to: ", gameCode);
 		setGameCode(gameCode);
 	};
 
 	useEffect(() => {
 		if (keepChecking && !userContext?.is_in_game) {
 			const checkUser = async () => {
-				console.log("Checking username : ", userContext.username);
 
 				const response = await api.isUsernameTaken(
 					userContext.username
 				);
 				if (response) {
-					console.log(
-						"Username already taken : ",
-						userContext.username
-					);
 					setShowModal(true);
 				}
 			};
