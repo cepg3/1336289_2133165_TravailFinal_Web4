@@ -7,18 +7,31 @@ import { SelectedCards } from "../../interfaces/CardInterface";
 interface GameCardRadioButtonProps {
   gameCardType: GameCardType;
   onSelectCard: (cardId: number, cardCategory: keyof SelectedCards) => void;
+  selectedCardId: number | null;
 }
 
-export default function GameCardRadioButton({ gameCardType, onSelectCard }: GameCardRadioButtonProps) {
-  const handleChange = () => {
+export default function GameCardRadioButton({ gameCardType, onSelectCard, selectedCardId }: GameCardRadioButtonProps) {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onSelectCard(gameCardType.id, gameCardType.cardCategory as keyof SelectedCards);
   };
+
+  const value = selectedCardId !== null ? selectedCardId.toString() : '';
 
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <FormControl component="fieldset">
-        <RadioGroup row aria-label="game-card-selection" name="game-card-selection">
-          <FormControlLabel control={<Radio onChange={handleChange} />} label="" />
+        <RadioGroup
+          row
+          aria-label={`${gameCardType.cardCategory}-selection`}
+          name={`${gameCardType.cardCategory}-selection`}
+          value={value}
+          onChange={handleChange}
+        >
+          <FormControlLabel 
+            value={gameCardType.id.toString()} 
+            control={<Radio />} 
+            label=""
+          />
         </RadioGroup>
       </FormControl>
       <GameCard gameCardType={gameCardType} />
