@@ -1,10 +1,21 @@
 import { Button, Card, CardContent, Grid } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { UserContextType } from "./Login/UserContext";
 
-function ChooseJoinOrCreate() {
+
+interface ChooseJoinOrCreateProps {
+	user: UserContextType | null;
+  }
+
+  
+  function ChooseJoinOrCreate({ user }: ChooseJoinOrCreateProps) {
 	const navigate = useNavigate();
 	
+
+	// log the user
+	console.log("User logged in: ", user);
+
 	const handleJoin = () => {
 		navigate("/join");
 	};
