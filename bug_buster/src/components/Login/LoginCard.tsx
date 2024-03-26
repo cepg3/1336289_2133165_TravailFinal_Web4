@@ -41,6 +41,10 @@ export default function LoginCard({
 			is_in_game: false,
 			is_client: false,
 		});
+
+		//Log the use
+		console.log("User logged in: ", tempUsername);
+
 		navigate("/dashboard");
 	};
 
