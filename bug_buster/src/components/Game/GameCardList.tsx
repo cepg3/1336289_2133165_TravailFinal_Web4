@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Box } from "@mui/material";
 import GameCardRadioButton from "./GameCardRadioButton";
 import { GameCardType } from "../../Api";
@@ -10,13 +10,25 @@ interface GameCardListProps {
 }
 
 export default function GameCardList({ cards, onSelectCard }: GameCardListProps) {
+  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
+
+  const handleSelectCard = (cardId: number, cardCategory: keyof SelectedCards) => {
+    setSelectedCardId(cardId);
+    onSelectCard(cardId, cardCategory);
+  };
+
   return (
     <Box sx={{ margin: 2 }}>
       <Typography variant="h5" gutterBottom>
         {cards[0]?.cardCategory}
       </Typography>
       {cards.map((card) => (
-        <GameCardRadioButton key={card.id} gameCardType={card} onSelectCard={onSelectCard} />
+        <GameCardRadioButton
+          key={card.id}
+          gameCardType={card}
+          onSelectCard={handleSelectCard}
+          selectedCardId={selectedCardId}
+        />
       ))}
     </Box>
   );
