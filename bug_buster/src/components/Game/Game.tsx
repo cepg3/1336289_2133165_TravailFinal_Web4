@@ -23,79 +23,89 @@ export default function Game({
   const handleStartGame = async () => {
     if (game && user.id !== null && user.id !== undefined) {
       await api.startGame(game.id);
-
+      
       if (!game.current_client_player_id) {
-        setGame({
-          ...game,
-          is_started: true,
-          current_client_player_id: user.id,
-        });
+      setGame({
+        ...game,
+        is_started: true,
+        current_client_player_id: user.id,
+      });
       } else {
-        setGame({
-          ...game,
-          is_started: true,
-        });
+      setGame({
+        ...game,
+        is_started: true,
+      });
       }
     } else {
       console.error(
-        "Erreur : Le jeu n'est pas défini ou l'ID de l'utilisateur est indéfini."
+      "Erreur : Le jeu n'est pas défini ou l'ID de l'utilisateur est indéfini."
       );
     }
-  };
+    };
 
   useEffect(() => {
-    if (!keepChecking) return;
+    // Makes sure the user doesn't exist in the database
+    const checkUser = async () => {
+      if (keepChecking) {
+        console.log("Checking username : ", user.username);
 
-    const checkUserAndGame = async () => {
-      console.log("Checking username : ", user.username);
-      let currentUser = user;
-
-      const isUsernameTaken = await api.isUsernameTaken(user.username);
-      if (isUsernameTaken) {
-        console.log("Username already taken : ", user.username);
-        const playerInfo = await api.getPlayer(user.username);
-        currentUser = {
-          ...playerInfo,
-          is_in_game: true,
-          is_client: true,
-        };
-      } else {
-        const newUser = await api.createPlayer(user.username);
-        console.log("User created : ", newUser.username);
-        currentUser = {
-          ...newUser,
-          is_in_game: true,
-          is_client: true,
-        };
-        setUser(currentUser);
-      }
-      const gameExist = await api.doesGameExist(gameCode);
-      let gameData = null;
-      if (gameExist) {
-        gameData = await api.getGame(gameCode);
-      } else {
-        gameData = await api.createGame(gameCode);
-      }
-
-      if (
-        gameData &&
-        gameData.id !== null &&
-        currentUser &&
-        currentUser.id !== null
-      ) {
-        const joinedGame = await api.joinGame(gameData.id, currentUser.id);
-        console.log("Joined game: ", joinedGame);
-        setGame(joinedGame);
-        setKeepChecking(false);
-      } else {
-        console.log(
-          "Impossible de rejoindre le jeu : ID de jeu ou d'utilisateur manquant."
+        setGame(
+          await api
+            .isUsernameTaken(user.username)
+            .then(async (response) => {
+              if (response) {
+                console.log("Username already taken : ", user.username);
+                return true;
+              } else {
+                const newUser = await api.createPlayer(user.username);
+                setUser({
+                  username: user.username,
+                  id: newUser.id,
+                  is_in_game: true,
+                  is_client: true,
+                });
+                console.log("User created : ", user.username);
+                return newUser;
+              }
+            })
+            .then(async (userOrResponse) => {
+              if (userOrResponse === true) {
+                return await api.getPlayer(user.username);
+              } else {
+                return userOrResponse;
+              }
+            })
+            .then(async (user) => {
+              // Makes sure the game exists
+              return await api
+                .doesGameExist(gameCode)
+                .then(async (gameExist) => {
+                  if (gameExist) {
+                    return await api.getGame(gameCode);
+                  } else {
+                    console.log("Creating game : ", gameCode);
+                    return await api.createGame(gameCode).then((newGame) => {
+                      if (newGame.id != null) {
+                        console.log("Game created : ", gameCode);
+                        return newGame;
+                      }
+                      return null;
+                    });
+                  }
+                })
+                .then(async (nullOrNewGame) => {
+                  if (nullOrNewGame != null) {
+                    return await api.joinGame(nullOrNewGame.id, user.id);
+                  }
+                  return null;
+                });
+            })
         );
       }
     };
 
-    checkUserAndGame();
-  }, [user, keepChecking, gameCode]);
+    checkUser();
+  }, [user, keepChecking, setKeepChecking, setUser, gameCode]);
 
   if (!game) {
     return <div>Chargement...</div>;
