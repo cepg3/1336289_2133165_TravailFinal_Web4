@@ -3,7 +3,7 @@ import axios from "axios";
 class api {
 	static async doesGameExist(gameId: string): Promise<boolean> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/exists/`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/exists/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -27,7 +27,7 @@ class api {
 		}
 
 		return axios
-			.get(`http://localhost:8000/players/${username}/taken/`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/players/${username}/taken/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -51,7 +51,7 @@ class api {
 	): Promise<GameType> {
 		return axios
 			.post(
-				`http://localhost:8000/games/`,
+				`https://apirest.w4-michael.vtinyhosting.site/games/`,
 				{
 					join_code: gameId,
 					points_to_win: pointsToWin,
@@ -78,7 +78,7 @@ class api {
 	static async createPlayer(username: string): Promise<PlayerType> {
 		return axios
 			.post(
-				`http://localhost:8000/players/`,
+				`https://apirest.w4-michael.vtinyhosting.site/players/`,
 				{
 					username: username,
 				},
@@ -101,7 +101,7 @@ class api {
 	static async joinGame(gameId: number, playerId: number): Promise<GameType> {
 		return axios
 			.patch(
-				`http://localhost:8000/games/${gameId}/join/`,
+				`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/join/`,
 				{
 					playerId: playerId,
 				},
@@ -126,7 +126,7 @@ class api {
 
 	static async startGame(gameId: number): Promise<GameType> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/start/`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/start/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -146,7 +146,7 @@ class api {
 
 	static async getGame(gameId: string): Promise<GameType> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/by_join_code/`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/by_join_code/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -166,7 +166,7 @@ class api {
 
 	static async updateGame(gameId: number, gameData: Partial<GameType>): Promise<GameType> {
 		return axios
-		  .patch(`http://localhost:8000/games/${gameId}/`, gameData, {
+		  .patch(`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/`, gameData, {
 			headers: {
 			  Accept: "application/json",
 			  "Content-Type": "application/json",
@@ -186,7 +186,7 @@ class api {
 	  
 	static getPlayers(gameId: number): Promise<PlayerType[]> {
 		return axios
-			.get(`http://localhost:8000/games/${gameId}/players`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/players`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -216,7 +216,7 @@ class api {
 
 	static async getPlayer(username: string): Promise<PlayerType> {
 		return axios
-			.get(`http://localhost:8000/players?username=${username}`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/players?username=${username}`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -237,7 +237,7 @@ class api {
 	// Function to get player using the player id
 	static async getPlayerById(playerId: number): Promise<PlayerType> {
 		return axios
-			.get(`http://localhost:8000/players/${playerId}/`, {
+			.get(`https://apirest.w4-michael.vtinyhosting.site/players/${playerId}/`, {
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
@@ -258,7 +258,7 @@ class api {
 	static async setPlayerIsInGame(id: number): Promise<PlayerType> {
 		return axios
 			.patch(
-				`http://localhost:8000/players/${id}/`,
+				`https://apirest.w4-michael.vtinyhosting.site/players/${id}/`,
 				{
 					is_in_game: true,
 				},
@@ -284,7 +284,7 @@ class api {
 	// Function to get cards from a player in a game
 	static async getPlayerCards(playerId: number): Promise<GameCardType[]> {
 		return (
-			(await axios.get(`http://localhost:8000/players/${playerId}/`))
+			(await axios.get(`https://apirest.w4-michael.vtinyhosting.site/players/${playerId}/`))
 				.data as PlayerType
 		).cards;
 	}
@@ -292,7 +292,7 @@ class api {
 	// Function to get cards from the game
 	static async getGameCards(gameId: number): Promise<GameCardType[]> {
 		return (
-			(await axios.get(`http://localhost:8000/games/${gameId}/`)).data as GameType
+			(await axios.get(`https://apirest.w4-michael.vtinyhosting.site/games/${gameId}/`)).data as GameType
 		).cards;
 	}
 }
